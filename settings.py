@@ -7,4 +7,4 @@ BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 
 # Frame Rate
-FPS = 20
+FPS = 10
