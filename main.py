@@ -58,18 +58,9 @@ word_list = ["incredible","university",'abbreviate','digest','radius','fortnite'
 alpha_list = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
 # Initialize images
-hangman_images = [
-    "hangman0.png",
-    "hangman1.png",
-    "hangman2.png",
-    "hangman3.png",
-    "hangman4.png",
-    "hangman5.png",
-    "hangman6.png"
-    ]
 hangman_list = []
-for img in hangman_images:
-    hangman_list.append(pg.image.load(img))
+for img in range(7):
+    hangman_list.append(pg.image.load("hangman" + str(img) + ".png"))
 
 # Game variables
 guesses_remaining = 7
