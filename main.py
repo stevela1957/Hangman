@@ -18,7 +18,7 @@ def show_word_status():
 
 def show_word():
     global letters_guessed
-    letters_guessed = [True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True]
+    letters_guessed = [True] * 26
     show_word_status()
 def show_alpha_remaining():
     for row in range(2):
@@ -27,11 +27,11 @@ def show_alpha_remaining():
             if letters_guessed[row * 13 + column] == False:
                 pg.draw.circle(screen, BLACK, (x_pos, 450 + (row * 60)), 23, 4)
                 letter = input_font.render(alpha_list[row * 13 + column], True, BLACK)
-                screen.blit(letter, (x_pos - 12, 434 + row * 60))
+                screen.blit(letter, (x_pos - letter.get_width() /2, 450 + row * 60 - letter.get_height() / 2))
             x_pos += 56
 
 def get_guess():
-    global guesses_remaining, letters_guessed
+    global guesses, letters_guessed
     guess = row = col = -1
     if pg.mouse.get_pressed()[0]:
         pos_x, pos_y = pg.mouse.get_pos()
@@ -42,8 +42,11 @@ def get_guess():
         if letters_guessed[row * 13 + col] == False:
             letters_guessed[row * 13 + col] = True
             if guess.lower() not in selected_word:
-                guesses_remaining -= 1
+                guesses += 1
     return guess
+
+def delay(pause):
+    pg.time.delay(pause)
 
 # Initialization variables
 pg.init()
@@ -62,29 +65,51 @@ hangman_list = []
 for img in range(7):
     hangman_list.append(pg.image.load("hangman" + str(img) + ".png"))
 
-# Game variables
-guesses_remaining = 7
-dead = False
-letters_guessed = [False, False,False, False,False, False,False, False,False, False,False, False,False, False,False, False,False, False,False, False,False, False,False, False,False, False,]
-selected_word = random.choice(word_list)
-
-guessed = False
-
-while not guessed:
-    for event in pg.event.get():
-        if event.type == pg.QUIT:
+def main():
+    global selected_word, letters_guessed, guesses
+    # Game variables
+    guessed = False
+    guesses = 0
+    letters_guessed = [False] * 26
+    selected_word = random.choice(word_list)
+    while not guessed:
+        for event in pg.event.get():
+            if event.type == pg.QUIT:
+                guessed = True
+        screen.fill(WHITE)
+        screen.blit(game_title, (260, 30))
+        screen.blit(hangman_list[guesses], (80, 150))
+        if show_word_status() == len(selected_word):
+            win = input_font.render("YOU WIN!", False, (255, 0, 0))
+            screen.blit(win, (330, 90))
             guessed = True
+            delay(3000)
+        if guesses == 6:
+            lose_message = input_font.render(f"The word was {selected_word}", True, BLACK)
+            screen.blit(lose_message, (WIDTH/2 - lose_message.get_width()/2, 90))
+            pg.display.update()
+            guessed = True
+            delay(3000)
+        show_alpha_remaining()
+        key = get_guess()
+        pg.display.update()
+        clock.tick(FPS)
+
+first_entry = play_again = True
+while play_again:
+    if first_entry:
+        first_entry = False
+        main()
     screen.fill(WHITE)
-    screen.blit(game_title, (260, 30))
-    screen.blit(hangman_list[7-guesses_remaining], (80, 150))
-    if show_word_status() == len(selected_word):
-        win = input_font.render("YOU WIN!", False, (255, 0, 0))
-        screen.blit(win, (330, 90))
-    show_alpha_remaining()
-    key = get_guess()
-    if guesses_remaining == 0:
-        show_word()
+    playAgain_text = input_font.render("Play again? (Y/N)", True, BLACK)
+    screen.blit(playAgain_text, (WIDTH/2 - playAgain_text.get_width()/2, 90))
     pg.display.update()
-    clock.tick(FPS)
+    for event in pg.event.get():
+        if event.type == pg.KEYDOWN:
+            if event.key == pg.K_y:
+                play_again = True
+                main()
+            if event.key == pg.K_n:
+                play_again = False
 
 pg.quit()
