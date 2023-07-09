@@ -63,20 +63,9 @@ title_font = pg.font.Font(None, 80)
 input_font = pg.font.Font(None, 50)
 game_title = title_font.render("HANGMAN", True, BLACK)
 clock = pg.time.Clock()
-#word_list = ["incredible",
-#             "university",
-#             'abbreviate',
-#             'digest',
-#             'radius',
-#             'fortnite',
-#             'constitution',
-#             'express',
-#             'soluble',
-#             'absorb',
-#             'invincible',]
-# Get the list of words
-words = open("wordlist","r")
-word_list = words.readlines()
+
+words = open("wordlist.txt", "r")
+word_list = words.read().splitlines()
 words.close()
 print(word_list)
 alpha_list = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
@@ -98,7 +87,7 @@ def main():
             if event.type == pg.QUIT:
                 guessed = True
         screen.fill(WHITE)
-        screen.blit(game_title, (260, 30))
+        screen.blit(game_title, (WIDTH/2-game_title.get_width()/2, 30))
         screen.blit(hangman_list[guesses], (80, 150))
         if show_word_status() == len(selected_word):
             show_game_result("YOU WIN!!")
