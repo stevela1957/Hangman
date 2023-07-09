@@ -42,7 +42,6 @@ def get_guess():
         if letters_guessed[row * 13 + col] == False:
             letters_guessed[row * 13 + col] = True
             if guess.lower() not in selected_word:
-                print(f"Guess is {guess} and is not in {selected_word}")
                 guesses_remaining -= 1
     return guess
 
@@ -57,7 +56,6 @@ game_title = title_font.render("HANGMAN", True, BLACK)
 clock = pg.time.Clock()
 word_list = ["incredible","university",'abbreviate','digest','radius','fortnite', 'constitution','express','soluble']
 alpha_list = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-
 
 # Initialize images
 hangman_images = [
@@ -78,12 +76,6 @@ guesses_remaining = 7
 dead = False
 letters_guessed = [False, False,False, False,False, False,False, False,False, False,False, False,False, False,False, False,False, False,False, False,False, False,False, False,False, False,]
 selected_word = random.choice(word_list)
-current_progress = "-" * len(selected_word)
-current_progress = "DEVE-OPERS"
-#current_progress = "----------"
-print(selected_word)
-print(current_progress)
-#print(letters_guessed)
 
 guessed = False
 
