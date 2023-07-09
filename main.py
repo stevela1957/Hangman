@@ -4,17 +4,21 @@ from settings import *
 
 def show_word_status():
     screen_pos = 300
-    position = input_font.render("---", True, BLACK)
-    for _ in range(len(selected_word)):
-        screen.blit(position, (screen_pos, 260))
-        screen_pos += 48
+    for ix, val in enumerate(current_progress):
+        if val == "-":
+            pg.draw.line(screen, BLACK, (screen_pos + ix * 2, 280), (screen_pos + 24 + ix * 2, 280), 4)
+        else:
+            ltr = input_font.render(val, True, BLACK)
+            screen.blit(ltr, (screen_pos + ix, 254))
+            print(val)
+        screen_pos += 36
 
 
 def show_alpha_remaining():
     for row in range(2):
         x_pos = 62
         for column in range(13):
-            if letters_guessed[row * 13 + column] == " ":
+            if letters_guessed[row * 13 + column] == "":
                 pg.draw.circle(screen, BLACK, (x_pos, 450 + (row * 60)), 23, 4)
                 letter = input_font.render(alpha_list[row * 13 + column], True, BLACK)
                 screen.blit(letter, (x_pos - 12, 434 + row * 60))
@@ -38,7 +42,7 @@ title_font = pg.font.Font(None, 80)
 input_font = pg.font.Font(None, 50)
 game_title = title_font.render("HANGMAN", True, BLACK)
 clock = pg.time.Clock()
-word_list = ["incredible","constitution",'abbreviate']
+word_list = ["incredible","university",'abbreviate','digest','radius','fortnite']
 alpha_list = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
 
@@ -59,10 +63,13 @@ for img in hangman_images:
 # Game variables
 guesses_remaining = 7
 dead = False
+letters_guessed = ["","","","","","","","","","","","","","","","","","","","","","","","","",""]
 selected_word = random.choice(word_list)
-letters_guessed = ["a","b", "c","d"," ", "f"," "," ", "i", " "," ", "l", "m", " "," ", "p", " ", " ", "s", "t", " ", " ", "w", " ", " "," "]
-
+current_progress = "-" * len(selected_word)
+current_progress = "DEVE-OPERS"
+#current_progress = "----------"
 print(selected_word)
+print(current_progress)
 
 guessed = False
 
