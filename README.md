@@ -8,4 +8,4 @@ attempt to make a working game.  This is a functional program, but has some issu
 #2: The positions of the letter buttons is sensed by mouse x,y position.  This is not perfect yet.  Working on dialing this in
 #3: Haven't figured out yet how to create the inner loop to allow a new game to be started.  Again, working on it
 
-I do recommend subscriving to Tech with Tim's channel.  He explains well and has several great pygame projects!
+I do recommend subscribing to Tech with Tim's channel.  He explains well and has several great pygame projects!
