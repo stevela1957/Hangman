@@ -45,6 +45,12 @@ def get_guess():
                 guesses += 1
     return guess
 
+def show_game_result(message):
+    text = input_font.render(message, True, BLACK)
+    screen.blit(text, (WIDTH / 2 - text.get_width() / 2, 90))
+    pg.display.update()
+    delay(2000)
+
 def delay(pause):
     pg.time.delay(pause)
 
@@ -57,7 +63,22 @@ title_font = pg.font.Font(None, 80)
 input_font = pg.font.Font(None, 50)
 game_title = title_font.render("HANGMAN", True, BLACK)
 clock = pg.time.Clock()
-word_list = ["incredible","university",'abbreviate','digest','radius','fortnite', 'constitution','express','soluble']
+#word_list = ["incredible",
+#             "university",
+#             'abbreviate',
+#             'digest',
+#             'radius',
+#             'fortnite',
+#             'constitution',
+#             'express',
+#             'soluble',
+#             'absorb',
+#             'invincible',]
+# Get the list of words
+words = open("wordlist","r")
+word_list = words.readlines()
+words.close()
+print(word_list)
 alpha_list = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
 # Initialize images
@@ -80,16 +101,11 @@ def main():
         screen.blit(game_title, (260, 30))
         screen.blit(hangman_list[guesses], (80, 150))
         if show_word_status() == len(selected_word):
-            win = input_font.render("YOU WIN!", False, (255, 0, 0))
-            screen.blit(win, (330, 90))
+            show_game_result("YOU WIN!!")
             guessed = True
-            delay(3000)
         if guesses == 6:
-            lose_message = input_font.render(f"The word was {selected_word}", True, BLACK)
-            screen.blit(lose_message, (WIDTH/2 - lose_message.get_width()/2, 90))
-            pg.display.update()
+            show_game_result(f"YOU LOSE -- The word was {selected_word}")
             guessed = True
-            delay(3000)
         show_alpha_remaining()
         key = get_guess()
         pg.display.update()
